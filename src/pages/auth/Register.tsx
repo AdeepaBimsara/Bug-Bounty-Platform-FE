@@ -1,4 +1,39 @@
+import { useState } from "react";
+import { register } from "../../services/auth";
+import { useNavigate } from "react-router-dom";
+
 export const Register = () => {
+
+  const [role,setRole] = useState("")
+  const [fullName,setFullName] = useState("")
+  const [email,setEmail] = useState("")
+  const [password,setPassword] = useState("")
+
+  const navigate = useNavigate()
+
+  const handleRegister = async () => {
+
+    if(!fullName || !email || !password){
+      alert("please fill all fields")
+      return
+    }
+    
+    try{
+     const data = await register(
+        role,
+        fullName,
+        email,
+        password
+    )
+     alert(data.message)
+     alert("Success full register...")
+     navigate("/login")
+     
+    }catch(err){
+      alert("register fail....")
+    }
+  }
+
   return (
     <div className="min-h-screen bg-black text-white">
 
@@ -43,7 +78,11 @@ export const Register = () => {
               Select Role
             </label>
 
-            <select className="w-full rounded-lg border border-white/10 bg-black p-3">
+            <select 
+            className="w-full rounded-lg border border-white/10 bg-black p-3" 
+            value={role} 
+            onChange={(e) => setRole(e.target.value)}
+            >
               <option>Researcher</option>
               <option>Company</option>
             </select>
@@ -58,6 +97,8 @@ export const Register = () => {
             <input
               type="text"
               placeholder="Enter your name"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
               className="w-full rounded-lg border border-white/10 bg-black p-3"
             />
           </div>
@@ -71,6 +112,8 @@ export const Register = () => {
             <input
               type="email"
               placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-lg border border-white/10 bg-black p-3"
             />
           </div>
@@ -84,6 +127,8 @@ export const Register = () => {
             <input
               type="password"
               placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full rounded-lg border border-white/10 bg-black p-3"
             />
           </div>
@@ -101,6 +146,7 @@ export const Register = () => {
               transition
               hover:bg-cyan-400
             "
+            onClick={handleRegister}
           >
             Create Account
           </button>
