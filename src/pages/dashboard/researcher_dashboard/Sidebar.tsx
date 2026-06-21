@@ -9,18 +9,22 @@ import {
   LogOut,
   Shield,
 } from 'lucide-react';
+import path from 'path';
+import { useNavigate } from 'react-router-dom';
 
 export const Sidebar = () => {
+
+  const navigate = useNavigate()
   
   const navItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', active: true },
-    { icon: Search, label: 'Browse Programs' },
-    { icon: Bug, label: 'My Reports' },
-    { icon: Trophy, label: 'Bounties' },
-    { icon: Trophy, label: 'Leaderboard' },
-    { icon: MessageSquare, label: 'Messages' },
-    { icon: User, label: 'Profile' },
-    { icon: Settings, label: 'Settings' },
+    { icon: LayoutDashboard, label: 'Dashboard', active: true ,path: "/programs"},
+    { icon: Search, label: 'Browse Programs',path: "/programs" },
+    { icon: Bug, label: 'My Reports',path: "/programs" },
+    { icon: Trophy, label: 'Bounties',path: "/programs" },
+    { icon: Trophy, label: 'Leaderboard',path: "/programs" },
+    { icon: MessageSquare, label: 'Messages',path: "/programs" },
+    { icon: User, label: 'Profile',path: "/programs" },
+    { icon: Settings, label: 'Settings',path: "/programs" },
   ];
 
   return (
@@ -40,6 +44,9 @@ export const Sidebar = () => {
           return (
             <button
               key={item.label}
+              onClick={() =>{
+                navigate(item.path)
+              }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 ${
                 item.active
                   ? 'bg-cyan-400/20 text-cyan-400 glow-cyan'

@@ -3,15 +3,18 @@ import Home from "../pages/home/Home"
 import { Login } from '../pages/auth/Login'
 import {Register} from "../pages/auth/Register"
 import DashMain from '../pages/dashboard/researcher_dashboard/DashMain'
+import BrowserProgram from '../pages/programs/BrowserProgram'
 
 export const Router = () => {
   return (
     <BrowserRouter>
         <Routes>
-            <Route path="/" element ={<Home/>}/>
+            {/* <Route path="/" element ={<Home/>}/> */}
+            <Route path="/" element ={<DashMain/>}/>
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
             <Route path='/researcherdash' element={<DashMain/>}/>
+            <Route path='/programs' element={<BrowserProgram/>}/>
         </Routes>
     </BrowserRouter>
   )
