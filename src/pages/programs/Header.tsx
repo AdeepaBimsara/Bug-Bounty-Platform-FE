@@ -13,13 +13,15 @@ export const Header = () => {
             Browse Programs
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl">
-            Explore active bug bounty programs and find security challenges that match your skills
+            Explore active bug bounty programs and find security challenges that
+            match your skills
           </p>
         </div>
 
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-          <div className="
+          <div
+            className="
               group
               relative
               rounded-2xl
@@ -34,11 +36,15 @@ export const Header = () => {
               hover:border-cyan-400/60
               transition-all
               duration-300
-              ">
+              "
+          >
             <div className="text-2xl font-bold text-accent">127</div>
-            <div className="text-xs text-muted-foreground mt-1">Active Programs</div>
+            <div className="text-xs text-muted-foreground mt-1">
+              Active Programs
+            </div>
           </div>
-          <div className="
+          <div
+            className="
               group
               relative
               rounded-2xl
@@ -53,11 +59,15 @@ export const Header = () => {
               hover:border-cyan-400/60
               transition-all
               duration-300
-          ">
+          "
+          >
             <div className="text-2xl font-bold text-accent">$2.3M</div>
-            <div className="text-xs text-muted-foreground mt-1">Total Bounties</div>
+            <div className="text-xs text-muted-foreground mt-1">
+              Total Bounties
+            </div>
           </div>
-          <div className="
+          <div
+            className="
               group
               relative
               rounded-2xl
@@ -72,11 +82,15 @@ export const Header = () => {
               hover:border-cyan-400/60
               transition-all
               duration-300
-          ">
+          "
+          >
             <div className="text-2xl font-bold text-accent">8.5K</div>
-            <div className="text-xs text-muted-foreground mt-1">Researchers</div>
+            <div className="text-xs text-muted-foreground mt-1">
+              Researchers
+            </div>
           </div>
-          <div className="
+          <div
+            className="
               group
               relative
               rounded-2xl
@@ -91,14 +105,17 @@ export const Header = () => {
               hover:border-cyan-400/60
               transition-all
               duration-300
-          ">
+          "
+          >
             <div className="text-2xl font-bold text-accent">12K+</div>
-            <div className="text-xs text-muted-foreground mt-1">Submissions</div>
+            <div className="text-xs text-muted-foreground mt-1">
+              Submissions
+            </div>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

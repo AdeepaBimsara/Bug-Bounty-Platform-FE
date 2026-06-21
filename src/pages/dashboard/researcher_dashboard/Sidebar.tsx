@@ -9,22 +9,21 @@ import {
   LogOut,
   Shield,
 } from 'lucide-react';
-import path from 'path';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const Sidebar = () => {
 
   const navigate = useNavigate()
+  const location = useLocation()
   
   const navItems = [
-    { icon: LayoutDashboard, label: 'Dashboard', active: true ,path: "/programs"},
+    { icon: LayoutDashboard, label: 'Dashboard',path: "/researcherdash"},
     { icon: Search, label: 'Browse Programs',path: "/programs" },
-    { icon: Bug, label: 'My Reports',path: "/programs" },
-    { icon: Trophy, label: 'Bounties',path: "/programs" },
-    { icon: Trophy, label: 'Leaderboard',path: "/programs" },
-    { icon: MessageSquare, label: 'Messages',path: "/programs" },
-    { icon: User, label: 'Profile',path: "/programs" },
-    { icon: Settings, label: 'Settings',path: "/programs" },
+    { icon: Bug, label: 'My Reports',path: "/a" },
+    { icon: Trophy, label: 'Leaderboard',path: "/a" },
+    { icon: MessageSquare, label: 'Messages',path: "/a" },
+    { icon: User, label: 'Profile',path: "/a" },
+    { icon: Settings, label: 'Settings',path: "/a" },
   ];
 
   return (
@@ -48,7 +47,7 @@ export const Sidebar = () => {
                 navigate(item.path)
               }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-300 ${
-                item.active
+                location.pathname === item.path
                   ? 'bg-cyan-400/20 text-cyan-400 glow-cyan'
                   : 'text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/10'
               }`}

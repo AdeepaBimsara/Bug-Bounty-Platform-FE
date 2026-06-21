@@ -1,106 +1,271 @@
-import { Target, Users, Clock, TrendingUp } from 'lucide-react'
+import { Target, Users, Clock, TrendingUp } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface ProgramCardProps {
   program: {
-    id: number
-    name: string
-    company: string
-    logo: string
-    status: string
-    bountyMax: string
-    vulnerabilitiesFound: number
-    researchersCount: number
-    lastUpdated: string
-    tags: string[]
-  }
+    id: number;
+    name: string;
+    company: string;
+    logo: string;
+    status: string;
+    bountyMax: string;
+    vulnerabilitiesFound: number;
+    researchersCount: number;
+    lastUpdated: string;
+    tags: string[];
+  };
 }
 
 export default function ProgramCard({ program }: ProgramCardProps) {
+  const navigate = useNavigate();
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-accent/20 bg-linear-to-br from-card/50 to-card/30 backdrop-blur transition-all duration-300 hover:border-accent/60 hover:shadow-lg hover:shadow-accent/10">
-      {/* Hover glow effect */}
-      <div className="absolute inset-0 bg-linear-to-br from-accent/0 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+    <div
+      className="
+    group relative overflow-hidden rounded-2xl
+    border border-cyan-400/20
+    bg-linear-to-br from-slate-900/80 via-slate-900/50 to-cyan-950/40
+    backdrop-blur-xl
+    transition-all duration-500
+    hover:-translate-y-1
+    hover:border-cyan-400/60
+    hover:shadow-xl
+    hover:shadow-cyan-500/20
+  "
+    >
+      {/* Glow Background */}
 
-      <div className="relative p-6 space-y-4">
+      <div
+        className="
+      absolute inset-0
+      bg-linear-to-br
+      from-cyan-400/10
+      via-transparent
+      to-blue-500/10
+      opacity-0
+      group-hover:opacity-100
+      transition-all duration-500
+    "
+      />
+
+      <div className="relative p-6 space-y-5">
         {/* Header */}
+
         <div className="flex items-start justify-between">
-          <div className="flex items-start gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent/10 text-xl font-bold text-accent group-hover:bg-accent/20 transition-colors">
+          <div className="flex items-start gap-4">
+            <div
+              className="
+            h-14 w-14
+            flex items-center justify-center
+            rounded-2xl
+            bg-cyan-400/10
+            border border-cyan-400/30
+            text-2xl
+            shadow-lg
+            shadow-cyan-500/10
+            group-hover:scale-110
+            transition-transform
+          "
+            >
               {program.logo}
             </div>
-            <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-foreground truncate leading-tight">
+
+            <div className="min-w-0">
+              <h3
+                className="
+              font-bold
+              text-lg
+              text-white
+              truncate
+              group-hover:text-cyan-400
+              transition-colors
+            "
+              >
                 {program.name}
               </h3>
-              <p className="text-sm text-muted-foreground truncate">
+
+              <p
+                className="
+              text-sm
+              text-slate-400
+            "
+              >
                 {program.company}
               </p>
             </div>
           </div>
-          <div className="flex h-6 items-center rounded-full bg-accent/10 px-2.5">
-            <span className="text-xs font-medium text-accent">{program.status}</span>
-          </div>
+
+          <span
+            className="
+          px-3 py-1
+          rounded-full
+          text-xs
+          font-semibold
+          bg-emerald-400/10
+          text-emerald-400
+          border border-emerald-400/20
+        "
+          >
+            {program.status}
+          </span>
         </div>
 
-        {/* Bounty Info */}
-        <div className="rounded-lg bg-secondary/30 p-3 border border-secondary/50">
-          <div className="text-xs text-muted-foreground mb-1">Max Bounty</div>
-          <div className="text-2xl font-bold text-accent">{program.bountyMax}</div>
+        {/* Reward */}
+
+        <div
+          className="
+        rounded-xl
+        p-4
+        bg-black/30
+        border border-cyan-400/10
+      "
+        >
+          <p className="text-xs text-slate-400">Maximum Bounty</p>
+
+          <h2
+            className="
+          mt-1
+          text-3xl
+          font-black
+          text-cyan-400
+        "
+          >
+            {program.bountyMax}
+          </h2>
         </div>
 
         {/* Tags */}
+
         <div className="flex flex-wrap gap-2">
           {program.tags.map((tag) => (
             <span
               key={tag}
-              className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-accent/10 text-accent border border-accent/20"
+              className="
+            px-3 py-1
+            rounded-full
+            text-xs
+            bg-cyan-400/10
+            text-cyan-300
+            border border-cyan-400/20
+          "
             >
-              {tag}
+              #{tag}
             </span>
           ))}
         </div>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-3 gap-2 pt-2">
-          <div className="rounded-lg bg-card/50 border border-border/50 p-3 text-center">
-            <div className="flex items-center justify-center h-5 mb-1">
-              <Target className="h-4 w-4 text-muted-foreground" />
-            </div>
-            <div className="text-sm font-semibold text-foreground">
+        {/* Stats */}
+
+        <div
+          className="
+        grid grid-cols-3
+        gap-3
+      "
+        >
+          <div
+            className="
+          rounded-xl
+          bg-white/5
+          border border-white/10
+          p-3
+          text-center
+        "
+          >
+            <Target className="mx-auto text-cyan-400 h-5" />
+
+            <p className="mt-2 text-white font-bold">
               {(program.vulnerabilitiesFound / 1000).toFixed(1)}K
-            </div>
-            <div className="text-xs text-muted-foreground">Vulns</div>
+            </p>
+
+            <p className="text-xs text-slate-400">Vulns</p>
           </div>
-          <div className="rounded-lg bg-card/50 border border-border/50 p-3 text-center">
-            <div className="flex items-center justify-center h-5 mb-1">
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </div>
-            <div className="text-sm font-semibold text-foreground">
+
+          <div
+            className="
+          rounded-xl
+          bg-white/5
+          border border-white/10
+          p-3
+          text-center
+        "
+          >
+            <Users className="mx-auto text-cyan-400 h-5" />
+
+            <p className="mt-2 text-white font-bold">
               {program.researchersCount}
-            </div>
-            <div className="text-xs text-muted-foreground">Active</div>
+            </p>
+
+            <p className="text-xs text-slate-400">Researchers</p>
           </div>
-          <div className="rounded-lg bg-card/50 border border-border/50 p-3 text-center">
-            <div className="flex items-center justify-center h-5 mb-1">
-              <Clock className="h-4 w-4 text-muted-foreground" />
-            </div>
-            <div className="text-sm font-semibold text-foreground">
+
+          <div
+            className="
+          rounded-xl
+          bg-white/5
+          border border-white/10
+          p-3
+          text-center
+        "
+          >
+            <Clock className="mx-auto text-cyan-400 h-5" />
+
+            <p
+              className="
+            mt-2 
+            text-white
+            font-bold
+            text-sm
+          "
+            >
               {program.lastUpdated}
-            </div>
-            <div className="text-xs text-muted-foreground">Updated</div>
+            </p>
+
+            <p className="text-xs text-slate-400">Updated</p>
           </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-2 pt-4">
-          <button className="flex-1 rounded-lg bg-accent text-accent-foreground font-medium py-2 px-3 text-sm hover:bg-accent/90 transition-colors active:scale-95">
+        {/* Buttons */}
+
+        <div className="flex gap-3 pt-3">
+          <button
+            onClick={() => {
+              navigate(`/programs/${program.id}`);
+            }}
+            className="
+          flex-1
+          py-3
+          rounded-xl
+          bg-linear-to-r
+          from-cyan-400
+          to-blue-500
+          text-black
+          font-bold
+          hover:shadow-lg
+          hover:shadow-cyan-400/30
+          transition-all
+          active:scale-95
+        "
+          >
             View Program
           </button>
-          <button className="flex-1 rounded-lg border border-accent/30 text-accent font-medium py-2 px-3 text-sm hover:bg-accent/10 transition-colors active:scale-95">
+
+          <button
+            className="
+          flex-1
+          py-3
+          rounded-xl
+          border
+          border-cyan-400/30
+          text-cyan-300
+          font-semibold
+          hover:bg-cyan-400/10
+          transition-all
+          active:scale-95
+        "
+          >
             Submit Report
           </button>
         </div>
       </div>
     </div>
-  )
+  );
 }
