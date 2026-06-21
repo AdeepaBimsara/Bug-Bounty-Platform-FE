@@ -249,6 +249,9 @@ export default function ProgramCard({ program }: ProgramCardProps) {
           </button>
 
           <button
+          onClick={() => {
+              navigate(`/submit-report/${program.id}`);
+            }}
             className="
           flex-1
           py-3

@@ -5,6 +5,7 @@ import {Register} from "../pages/auth/Register"
 import DashMain from '../pages/dashboard/researcher_dashboard/DashMain'
 import BrowserProgram from '../pages/programs/BrowserProgram'
 import ProgramDetails from '../pages/programs/ProgramDetails'
+import SubmitReport from '../pages/programs/SubmitReport'
 
 export const Router = () => {
   return (
@@ -17,6 +18,7 @@ export const Router = () => {
             <Route path='/researcherdash' element={<DashMain/>}/>
             <Route path='/programs' element={<BrowserProgram/>}/>
             <Route path='/programs/:id' element={<ProgramDetails/>}/>
+            <Route path='/submit-report/:id' element={<SubmitReport/>}/>
         </Routes>
     </BrowserRouter>
   )
