@@ -1,8 +1,40 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../hooks/useAuth";
+import { getMyDetails, login } from "../../services/auth";
 
 export const Login = () => {
 
+  const[email,setEmail] = useState("")
+  const[password,setPassword] = useState("")
+  const{setUser} = useAuth()
+
   const navigate = useNavigate()
+
+  const handleLogin = async () => {
+    if(!email || !password){
+      alert("please fill all fields")
+    }
+
+     try {
+      const data = await login(email, password)
+      if (data?.data?.accessToken) {
+        await localStorage.setItem("accessToken", data.data.accessToken)
+        await localStorage.setItem("refreshToken", data.data.refreshToken)
+
+        const resData = await getMyDetails()
+        const userData = resData?.data
+        setUser(userData)
+
+        navigate("/researcherdash")
+
+      } else {
+        alert("Login fail..!")
+      }
+    } catch (err) {
+      alert("Login fail..!")
+    }
+  }
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -83,6 +115,8 @@ export const Login = () => {
             <input
               type="email"
               placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full rounded-lg border border-white/10 bg-black p-3"
             />
           </div>
@@ -96,6 +130,8 @@ export const Login = () => {
             <input
               type="password"
               placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full rounded-lg border border-white/10 bg-black p-3"
             />
           </div>
@@ -132,7 +168,7 @@ export const Login = () => {
               transition
               hover:bg-cyan-400
             "
-            onClick={() => navigate("/researcherdash")}
+            onClick={handleLogin}
           >
             Sign In
           </button>
