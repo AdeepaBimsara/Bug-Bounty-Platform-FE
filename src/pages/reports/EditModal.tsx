@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import { X, Save } from 'lucide-react';
 
@@ -19,7 +17,7 @@ interface EditModalProps {
   onClose: () => void;
 }
 
-export default function EditModal({ report, onSave, onClose }: EditModalProps) {
+export const EditModal = ({ report, onSave, onClose }: EditModalProps) => {
   const [formData, setFormData] = useState(report);
 
   const handleChange = (
@@ -146,3 +144,5 @@ export default function EditModal({ report, onSave, onClose }: EditModalProps) {
     </div>
   );
 }
+
+export default EditModal

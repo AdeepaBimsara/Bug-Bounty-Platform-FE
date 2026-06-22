@@ -2,7 +2,7 @@ interface SeverityBadgeProps {
   severity: 'Critical' | 'High' | 'Medium' | 'Low';
 }
 
-export default function SeverityBadge({ severity }: SeverityBadgeProps) {
+export const SeverityBadge = ({ severity }: SeverityBadgeProps) => {
   const styles: Record<string, { bg: string; text: string; glow: string }> = {
     Critical: {
       bg: 'bg-red-500/20',
@@ -34,3 +34,6 @@ export default function SeverityBadge({ severity }: SeverityBadgeProps) {
     </span>
   );
 }
+
+
+export default SeverityBadge

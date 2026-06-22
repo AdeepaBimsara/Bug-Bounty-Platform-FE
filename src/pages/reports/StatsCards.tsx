@@ -9,7 +9,7 @@ interface StatsCardsProps {
   };
 }
 
-export default function StatsCards({ stats }: StatsCardsProps) {
+export const StatsCards = ({ stats }: StatsCardsProps) => {
   const cards = [
     {
       label: 'Total Reports',
@@ -64,3 +64,5 @@ export default function StatsCards({ stats }: StatsCardsProps) {
     </div>
   );
 }
+
+export default StatsCards

@@ -2,12 +2,15 @@ import { useParams, useNavigate } from "react-router-dom";
 import Sidebar from "../dashboard/researcher_dashboard/Sidebar";
 import mockPrograms from "../programs/data/Programs";
 import { ArrowLeft, Upload, Shield } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
+import api from "../../services/api";
 
 const SubmitReport = () => {
   const { id } = useParams();
 
   const navigate = useNavigate();
+  const [file, setFile] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string>("");
 
   const program = mockPrograms.find((item) => item.id === Number(id));
 
@@ -15,32 +18,64 @@ const SubmitReport = () => {
   const [severity, setSeverity] = useState("Low");
   const [description, setDescription] = useState("");
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const report = {
-      id: Date.now(),
+    try {
+      const formData = new FormData();
 
-      programId: program?.id,
+      formData.append("programId", String(program?.id));
 
-      programName: program?.name,
+      formData.append("programName", program?.name || "");
 
-      title,
+      formData.append("title", title);
+      formData.append("severity", severity);
+      formData.append("description", description);
 
-      severity,
+      if (file) {
+        formData.append("proofFile", file);
+      }
 
-      description,
+      const response = await api.post("/reports", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
-      status: "Pending",
+      console.log(response.data);
 
-      createdAt: new Date().toLocaleDateString(),
-    };
+      alert("Report Submitted Successfully");
 
-    console.log(report);
+      navigate("/reports");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to submit report");
+    }
 
-    alert("Report Submitted Successfully");
+  //   const report = {
+  //     id: Date.now(),
 
-    navigate("/reports");
+  //     programId: program?.id,
+
+  //     programName: program?.name,
+
+  //     title,
+
+  //     severity,
+
+  //     description,
+
+  //     status: "Pending",
+
+  //     createdAt: new Date().toLocaleDateString(),
+  //   };
+
+  //   console.log(report);
+  //   console.log(file);
+
+  //   // alert("Report Submitted Successfully");
+
+  //   navigate("/reports");
   };
 
   return (
@@ -186,22 +221,77 @@ const SubmitReport = () => {
 
             <div
               className="
-                border
-                border-dashed
-                border-cyan-400/30
-                rounded-xl
-                p-8
-                text-center
-                "
+              border
+              border-dashed
+              border-cyan-400/30
+              rounded-xl
+              p-8
+              text-center
+              hover:border-cyan-400
+              transition-all
+              cursor-pointer
+            "
             >
-              <Upload
-                className="
-                mx-auto
-                text-cyan-400
-                "
-              />
+              {!preview ? (
+                <label htmlFor="proof-upload" className="cursor-pointer">
+                  <Upload className="mx-auto text-cyan-400 w-10 h-10" />
 
-              <p className="text-slate-400 mt-2">Upload proof / screenshots</p>
+                  <p className="text-slate-400 mt-2">Upload research file</p>
+                </label>
+              ) : (
+                <div className="space-y-4">
+                  <img
+                    src={preview}
+                    alt="preview"
+                    className="
+                    w-full
+                    max-h-60
+                    object-cover
+                    rounded-xl
+                    border
+                    border-cyan-400/20
+                  "
+                  />
+
+                  <p className="text-cyan-400 text-sm font-medium">
+                    {file?.name}
+                  </p>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFile(null);
+                      setPreview("");
+                    }}
+                    className="
+                    px-4
+                    py-2
+                    rounded-lg
+                    bg-red-500/10
+                    text-red-400
+                    hover:bg-red-500/20
+                    transition
+                  "
+                  >
+                    Remove File
+                  </button>
+                </div>
+              )}
+
+              <input
+                id="proof-upload"
+                type="file"
+                accept="image/*,.pdf"
+                className="hidden"
+                onChange={(e) => {
+                  const selectedFile = e.target.files?.[0];
+
+                  if (selectedFile) {
+                    setFile(selectedFile);
+                    setPreview(URL.createObjectURL(selectedFile));
+                  }
+                }}
+              />
             </div>
 
             <button

@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useMemo } from 'react';
 import {
   FileText,
@@ -77,7 +75,7 @@ const initialReports: Report[] = [
   },
 ];
 
-export default function MyReportsPage() {
+export const MyReportsPage = () => {
   const [reports, setReports] = useState<Report[]>(initialReports);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('All Status');
@@ -257,3 +255,5 @@ export default function MyReportsPage() {
     </div>
   );
 }
+
+export default MyReportsPage

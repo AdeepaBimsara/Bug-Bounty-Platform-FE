@@ -2,7 +2,7 @@ interface StatusBadgeProps {
   status: 'Accepted' | 'Reviewing' | 'Pending' | 'Rejected';
 }
 
-export default function StatusBadge({ status }: StatusBadgeProps) {
+export const StatusBadge = ({ status }: StatusBadgeProps) => {
   const styles: Record<string, { bg: string; text: string; glow: string }> = {
     Accepted: {
       bg: 'bg-green-500/20',
@@ -34,3 +34,5 @@ export default function StatusBadge({ status }: StatusBadgeProps) {
     </span>
   );
 }
+
+export default StatusBadge

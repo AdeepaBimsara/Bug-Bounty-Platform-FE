@@ -20,7 +20,7 @@ interface ReportsTableProps {
   onDeleteClick: (id: string) => void;
 }
 
-export default function ReportsTable({ reports, onEdit, onDeleteClick }: ReportsTableProps) {
+export const ReportsTable = ({ reports, onEdit, onDeleteClick }: ReportsTableProps) => {
   return (
     <div className="overflow-x-auto">
       <table className="w-full">
@@ -88,3 +88,5 @@ export default function ReportsTable({ reports, onEdit, onDeleteClick }: Reports
     </div>
   );
 }
+
+export default ReportsTable
