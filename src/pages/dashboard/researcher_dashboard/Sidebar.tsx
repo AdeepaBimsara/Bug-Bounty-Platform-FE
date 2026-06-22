@@ -19,7 +19,7 @@ export const Sidebar = () => {
   const navItems = [
     { icon: LayoutDashboard, label: 'Dashboard',path: "/researcherdash"},
     { icon: Search, label: 'Browse Programs',path: "/programs" },
-    { icon: Bug, label: 'My Reports',path: "/a" },
+    { icon: Bug, label: 'My Reports',path: "/reports" },
     { icon: Trophy, label: 'Leaderboard',path: "/a" },
     { icon: MessageSquare, label: 'Messages',path: "/a" },
     { icon: User, label: 'Profile',path: "/a" },
