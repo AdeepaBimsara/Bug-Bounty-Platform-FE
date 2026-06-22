@@ -51,31 +51,6 @@ const SubmitReport = () => {
       console.error(err);
       alert("Failed to submit report");
     }
-
-  //   const report = {
-  //     id: Date.now(),
-
-  //     programId: program?.id,
-
-  //     programName: program?.name,
-
-  //     title,
-
-  //     severity,
-
-  //     description,
-
-  //     status: "Pending",
-
-  //     createdAt: new Date().toLocaleDateString(),
-  //   };
-
-  //   console.log(report);
-  //   console.log(file);
-
-  //   // alert("Report Submitted Successfully");
-
-  //   navigate("/reports");
   };
 
   return (

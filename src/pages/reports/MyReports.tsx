@@ -1,156 +1,100 @@
-import { useState, useMemo } from 'react';
-import {
-  FileText,
-  CheckCircle,
-  Clock,
-  DollarSign,
-  Edit2,
-  Trash2,
-  Search,
-  Filter,
-  ChevronDown,
-  X,
-  Save,
-} from 'lucide-react';
-import StatsCards from './StatsCards';
-import ReportsTable from './ReportsTable';
-import EditModal from './EditModal';
-import Sidebar from '../dashboard/researcher_dashboard/Sidebar';
+import { useState, useEffect } from "react";
+import { Search, ChevronDown } from "lucide-react";
+import ReportsTable from "./ReportsTable";
+import EditModal from "./EditModal";
+import Sidebar from "../dashboard/researcher_dashboard/Sidebar";
+import { getReports } from "../../services/reportService";
+import api from "../../services/api";
 
 interface Report {
-  id: string;
-  program: string;
-  vulnerability: string;
-  severity: 'Critical' | 'High' | 'Medium' | 'Low';
-  status: 'Accepted' | 'Reviewing' | 'Pending' | 'Rejected';
-  reward: number;
-  date: string;
+  _id: string;
+
+  programId: number;
+
+  programName: string;
+
+  title: string;
+
+  severity: string;
+
+  description: string;
+
+  status: string;
+
+  createdAt: string;
 }
 
-const initialReports: Report[] = [
-  {
-    id: 'REP-001',
-    program: 'Google Security Program',
-    vulnerability: 'Stored XSS Vulnerability',
-    severity: 'Critical',
-    status: 'Accepted',
-    reward: 5000,
-    date: '21 Jun 2026',
-  },
-  {
-    id: 'REP-002',
-    program: 'Meta Bug Bounty',
-    vulnerability: 'API Authentication Bypass',
-    severity: 'High',
-    status: 'Reviewing',
-    reward: 2500,
-    date: '20 Jun 2026',
-  },
-  {
-    id: 'REP-003',
-    program: 'Microsoft Security',
-    vulnerability: 'Information Disclosure',
-    severity: 'Medium',
-    status: 'Pending',
-    reward: 1000,
-    date: '18 Jun 2026',
-  },
-  {
-    id: 'REP-004',
-    program: 'Apple Security Bounty',
-    vulnerability: 'CSRF Token Validation',
-    severity: 'High',
-    status: 'Accepted',
-    reward: 3500,
-    date: '17 Jun 2026',
-  },
-  {
-    id: 'REP-005',
-    program: 'Amazon Bug Bounty',
-    vulnerability: 'SQL Injection in Search',
-    severity: 'Critical',
-    status: 'Reviewing',
-    reward: 4000,
-    date: '16 Jun 2026',
-  },
-];
-
 export const MyReportsPage = () => {
-  const [reports, setReports] = useState<Report[]>(initialReports);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState<string>('All Status');
-  const [filterSeverity, setFilterSeverity] = useState<string>('All Severity');
-  const [sortBy, setSortBy] = useState<string>('date');
+  const [reports, setReports] = useState<Report[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterStatus, setFilterStatus] = useState<string>("All Status");
+  const [filterSeverity, setFilterSeverity] = useState<string>("All Severity");
+  const [sortBy, setSortBy] = useState<string>("date");
   const [editingReport, setEditingReport] = useState<Report | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
 
-  const filteredReports = useMemo(() => {
-    let result = reports.filter((report) => {
-      const matchesSearch =
-        report.vulnerability.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        report.program.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        report.id.toLowerCase().includes(searchTerm.toLowerCase());
+  useEffect(() => {
+    fetchReports();
+  }, []);
 
-      const matchesStatus = filterStatus === 'All Status' || report.status === filterStatus;
-      const matchesSeverity = filterSeverity === 'All Severity' || report.severity === filterSeverity;
+  const fetchReports = async () => {
+    try {
+      const data = await getReports();
 
-      return matchesSearch && matchesStatus && matchesSeverity;
-    });
-
-    result.sort((a, b) => {
-      if (sortBy === 'date') {
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      } else if (sortBy === 'reward') {
-        return b.reward - a.reward;
-      } else if (sortBy === 'severity') {
-        const severityOrder = { Critical: 4, High: 3, Medium: 2, Low: 1 };
-        return severityOrder[b.severity as keyof typeof severityOrder] -
-          severityOrder[a.severity as keyof typeof severityOrder];
-      }
-      return 0;
-    });
-
-    return result;
-  }, [reports, searchTerm, filterStatus, filterSeverity, sortBy]);
-
-  const handleSave = (updatedReport: Report) => {
-    setReports(
-      reports.map((report) => (report.id === updatedReport.id ? updatedReport : report))
-    );
-    setEditingReport(null);
+      setReports(data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleDelete = (id: string) => {
-    setReports(reports.filter((report) => report.id !== id));
-    setDeleteConfirm(null);
+  const handleSave = async (updatedReport: Report) => {
+    try {
+      const response = await api.put(
+        `/reports/${updatedReport._id}`,
+        updatedReport,
+      );
+
+      setReports(
+        reports.map((report) =>
+          report._id === updatedReport._id ? response.data : report,
+        ),
+      );
+
+      setEditingReport(null);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const stats = {
-    total: reports.length,
-    accepted: reports.filter((r) => r.status === 'Accepted').length,
-    pending: reports.filter((r) => r.status !== 'Accepted' && r.status !== 'Rejected').length,
-    earnings: reports
-      .filter((r) => r.status === 'Accepted')
-      .reduce((sum, r) => sum + r.reward, 0),
+  const handleDelete = async (id: string) => {
+    try {
+      await api.delete(`/reports/${id}`);
+
+      setReports(reports.filter((report) => report._id !== id));
+
+      setDeleteConfirm(null);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-950 via-slate-900 to-indigo-950 text-white">
-        <Sidebar/>
+      <Sidebar />
       <main className="ml-72 flex-1 overflow-y-auto">
         <div className="space-y-6 px-6 py-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div className="space-y-2">
               <h1 className="text-3xl font-bold text-foreground">My Reports</h1>
-              <p className="text-muted-foreground">Track, manage and update your vulnerability submissions</p>
+              <p className="text-muted-foreground">
+                Track, manage and update your vulnerability submissions
+              </p>
             </div>
             <button className="flex items-center gap-2 rounded-lg bg-cyan-500/20 px-4 py-2 font-semibold text-cyan-400 transition-all duration-300 hover:bg-cyan-500/30 hover:shadow-lg hover:shadow-cyan-500/20">
               <span>+</span>
               <span>Submit New Report</span>
             </button>
           </div>
-
-          <StatsCards stats={stats} />
 
           <div className="glass-hover rounded-xl p-6">
             <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
@@ -212,29 +156,32 @@ export const MyReportsPage = () => {
             </div>
 
             <ReportsTable
-              reports={filteredReports}
+              reports={reports}
               onEdit={setEditingReport}
               onDeleteClick={setDeleteConfirm}
             />
-
-            {filteredReports.length === 0 && (
-              <div className="flex flex-col items-center justify-center py-12">
-                <FileText className="mb-4 h-12 w-12 text-muted-foreground" />
-                <p className="text-lg font-semibold text-foreground">No reports found</p>
-                <p className="text-muted-foreground">Try adjusting your search or filters</p>
-              </div>
-            )}
           </div>
         </div>
       </main>
 
-      {editingReport && <EditModal report={editingReport} onSave={handleSave} onClose={() => setEditingReport(null)} />}
+      {editingReport && (
+        <EditModal
+          report={editingReport}
+          onSave={handleSave}
+          onClose={() => setEditingReport(null)}
+        />
+      )}
 
       {deleteConfirm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="glass-hover rounded-xl p-6 shadow-2xl">
-            <h3 className="mb-2 text-lg font-bold text-foreground">Delete Report?</h3>
-            <p className="mb-6 text-muted-foreground">This action cannot be undone. The report {deleteConfirm} will be permanently deleted.</p>
+            <h3 className="mb-2 text-lg font-bold text-foreground">
+              Delete Report?
+            </h3>
+            <p className="mb-6 text-muted-foreground">
+              This action cannot be undone. The report {deleteConfirm} will be
+              permanently deleted.
+            </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setDeleteConfirm(null)}
@@ -254,6 +201,6 @@ export const MyReportsPage = () => {
       )}
     </div>
   );
-}
+};
 
-export default MyReportsPage
+export default MyReportsPage;

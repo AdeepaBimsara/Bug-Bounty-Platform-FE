@@ -1,17 +1,21 @@
-'use client';
-
-import { Edit2, Trash2 } from 'lucide-react';
-import SeverityBadge from './SeverityBadge';
-import StatusBadge from './StatusBadge';
+import { Edit2, Trash2 } from "lucide-react";
 
 interface Report {
-  id: string;
-  program: string;
-  vulnerability: string;
-  severity: 'Critical' | 'High' | 'Medium' | 'Low';
-  status: 'Accepted' | 'Reviewing' | 'Pending' | 'Rejected';
-  reward: number;
-  date: string;
+  _id: string;
+
+  programId: number;
+
+  programName: string;
+
+  title: string;
+
+  severity: string;
+
+  description: string;
+
+  status: string;
+
+  createdAt: string;
 }
 
 interface ReportsTableProps {
@@ -20,48 +24,90 @@ interface ReportsTableProps {
   onDeleteClick: (id: string) => void;
 }
 
-export const ReportsTable = ({ reports, onEdit, onDeleteClick }: ReportsTableProps) => {
+export const ReportsTable = ({
+  reports,
+  onEdit,
+  onDeleteClick,
+}: ReportsTableProps) => {
   return (
     <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
           <tr className="border-b border-cyan-400/20">
-            <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">Report ID</th>
-            <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">Program</th>
-            <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">Vulnerability</th>
-            <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">Severity</th>
-            <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">Status</th>
-            <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">Reward</th>
-            <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">Date</th>
-            <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">Actions</th>
+            <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">
+              Report ID
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">
+              program ID
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">
+              program Name
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">
+              Title
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">
+              severity
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">
+              description
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">
+              status
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">
+              Date
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">
+              Actions
+            </th>
           </tr>
         </thead>
         <tbody>
           {reports.map((report) => (
             <tr
-              key={report.id}
+              key={report._id}
               className="border-b border-cyan-400/10 transition-all duration-200 hover:bg-white/5"
             >
               <td className="px-4 py-3">
-                <span className="font-mono text-sm font-semibold text-cyan-400">{report.id}</span>
+                <span className="font-mono text-sm font-semibold text-cyan-400">
+                  {report._id}
+                </span>
               </td>
               <td className="px-4 py-3">
-                <span className="text-sm text-foreground">{report.program}</span>
+                <span className="text-sm text-foreground">
+                  {report.programId}
+                </span>
               </td>
               <td className="px-4 py-3">
-                <span className="text-sm text-foreground max-w-xs truncate block">{report.vulnerability}</span>
+                <span className="text-sm text-foreground max-w-xs truncate block">
+                  {report.programName}
+                </span>
               </td>
               <td className="px-4 py-3">
-                <SeverityBadge severity={report.severity} />
+                <span className="text-sm text-foreground max-w-xs truncate block">
+                  {report.title}
+                </span>
               </td>
               <td className="px-4 py-3">
-                <StatusBadge status={report.status} />
+                <span className="text-sm text-foreground max-w-xs truncate block">
+                  {report.severity}
+                </span>
               </td>
               <td className="px-4 py-3">
-                <span className="font-semibold text-emerald-400">${report.reward.toLocaleString()}</span>
+                <span className="text-sm text-foreground max-w-xs truncate block">
+                  {report.description}
+                </span>
               </td>
               <td className="px-4 py-3">
-                <span className="text-sm text-muted-foreground">{report.date}</span>
+                <span className="text-sm text-foreground max-w-xs truncate block">
+                  {report.status}
+                </span>
+              </td>
+              <td className="px-4 py-3">
+                <span className="text-sm text-foreground max-w-xs truncate block">
+                  {report.createdAt}
+                </span>
               </td>
               <td className="px-4 py-3">
                 <div className="flex gap-2">
@@ -73,7 +119,7 @@ export const ReportsTable = ({ reports, onEdit, onDeleteClick }: ReportsTablePro
                     <Edit2 className="h-4 w-4 text-cyan-400" />
                   </button>
                   <button
-                    onClick={() => onDeleteClick(report.id)}
+                    onClick={() => onDeleteClick(report._id)}
                     className="group relative rounded-lg bg-red-500/20 p-2 transition-all duration-300 hover:bg-red-500/30 hover:shadow-lg hover:shadow-red-500/20"
                     title="Delete report"
                   >
@@ -87,6 +133,6 @@ export const ReportsTable = ({ reports, onEdit, onDeleteClick }: ReportsTablePro
       </table>
     </div>
   );
-}
+};
 
-export default ReportsTable
+export default ReportsTable;

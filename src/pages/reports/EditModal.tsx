@@ -1,14 +1,22 @@
-import { useState } from 'react';
-import { X, Save } from 'lucide-react';
+import { useState } from "react";
+import { X, Save } from "lucide-react";
 
 interface Report {
-  id: string;
-  program: string;
-  vulnerability: string;
-  severity: 'Critical' | 'High' | 'Medium' | 'Low';
-  status: 'Accepted' | 'Reviewing' | 'Pending' | 'Rejected';
-  reward: number;
-  date: string;
+  _id: string;
+
+  programId: number;
+
+  programName: string;
+
+  title: string;
+
+  severity: string;
+
+  description: string;
+
+  status: string;
+
+  createdAt: string;
 }
 
 interface EditModalProps {
@@ -21,12 +29,14 @@ export const EditModal = ({ report, onSave, onClose }: EditModalProps) => {
   const [formData, setFormData] = useState(report);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === 'reward' ? parseInt(value) : value,
+      [name]: name === "reward" ? parseInt(value) : value,
     }));
   };
 
@@ -50,31 +60,37 @@ export const EditModal = ({ report, onSave, onClose }: EditModalProps) => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold text-foreground mb-2">Report ID</label>
+            <label className="block text-sm font-semibold text-foreground mb-2">
+              Report ID
+            </label>
             <input
               type="text"
-              value={formData.id}
+              value={formData._id}
               disabled
               className="w-full rounded-lg bg-white/5 px-3 py-2 text-foreground outline-none cursor-not-allowed opacity-50"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-foreground mb-2">Vulnerability Title</label>
+            <label className="block text-sm font-semibold text-foreground mb-2">
+              Vulnerability Title
+            </label>
             <input
               type="text"
-              name="vulnerability"
-              value={formData.vulnerability}
+              name="title"
+              value={formData.title}
               onChange={handleChange}
               className="w-full rounded-lg bg-white/5 px-3 py-2 text-foreground outline-none transition-all duration-300 hover:bg-white/10 focus:bg-white/15 focus:ring-2 focus:ring-cyan-400/50"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-foreground mb-2">Description</label>
+            <label className="block text-sm font-semibold text-foreground mb-2">
+              Description
+            </label>
             <textarea
-              name="program"
-              value={formData.program}
+              name="description"
+              value={formData.description}
               onChange={handleChange}
               rows={3}
               className="w-full rounded-lg bg-white/5 px-3 py-2 text-foreground outline-none transition-all duration-300 hover:bg-white/10 focus:bg-white/15 focus:ring-2 focus:ring-cyan-400/50"
@@ -83,7 +99,9 @@ export const EditModal = ({ report, onSave, onClose }: EditModalProps) => {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-semibold text-foreground mb-2">Severity</label>
+              <label className="block text-sm font-semibold text-foreground mb-2">
+                Severity
+              </label>
               <select
                 name="severity"
                 value={formData.severity}
@@ -97,7 +115,9 @@ export const EditModal = ({ report, onSave, onClose }: EditModalProps) => {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-foreground mb-2">Status</label>
+              <label className="block text-sm font-semibold text-foreground mb-2">
+                Status
+              </label>
               <select
                 name="status"
                 value={formData.status}
@@ -113,11 +133,13 @@ export const EditModal = ({ report, onSave, onClose }: EditModalProps) => {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-foreground mb-2">Reward ($)</label>
+            <label className="block text-sm font-semibold text-foreground mb-2">
+              Date
+            </label>
             <input
               type="number"
-              name="reward"
-              value={formData.reward}
+              name="date"
+              value={formData.createdAt}
               onChange={handleChange}
               className="w-full rounded-lg bg-white/5 px-3 py-2 text-foreground outline-none transition-all duration-300 hover:bg-white/10 focus:bg-white/15 focus:ring-2 focus:ring-cyan-400/50"
             />
@@ -143,6 +165,6 @@ export const EditModal = ({ report, onSave, onClose }: EditModalProps) => {
       </div>
     </div>
   );
-}
+};
 
-export default EditModal
+export default EditModal;
