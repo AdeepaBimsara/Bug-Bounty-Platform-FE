@@ -7,13 +7,15 @@ import BrowserProgram from '../pages/programs/BrowserProgram'
 import ProgramDetails from '../pages/programs/ProgramDetails'
 import SubmitReport from '../pages/programs/SubmitReport'
 import MyReports from '../pages/reports/MyReports'
+import Dashboard from '../pages/dashboard/company_dashboard/Dashboard'
 
 export const Router = () => {
   return (
     <BrowserRouter>
         <Routes>
-            {/* <Route path="/" element ={<Home/>}/> */}
-            <Route path="/" element ={<DashMain/>}/>
+            <Route path="/" element ={<Home/>}/>
+            {/* <Route path="/" element ={<DashMain/>}/> */}
+            {/* <Route path="/" element ={<Dashboard/>}/> */}
             <Route path='/login' element={<Login/>}/>
             <Route path='/register' element={<Register/>}/>
             <Route path='/researcherdash' element={<DashMain/>}/>
@@ -21,6 +23,8 @@ export const Router = () => {
             <Route path='/programs/:id' element={<ProgramDetails/>}/>
             <Route path='/submit-report/:id' element={<SubmitReport/>}/>
             <Route path='/reports' element={<MyReports/>}/> 
+            <Route path="/companydash" element ={<Dashboard/>}/>
+
         </Routes>
     </BrowserRouter>
   )
