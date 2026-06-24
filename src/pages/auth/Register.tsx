@@ -83,8 +83,8 @@ export const Register = () => {
             value={role} 
             onChange={(e) => setRole(e.target.value)}
             >
-              <option>Researcher</option>
-              <option>Company</option>
+              <option value="RESEARCHER">Researcher</option>
+              <option value="COMPANY">Company</option>
             </select>
           </div>
 

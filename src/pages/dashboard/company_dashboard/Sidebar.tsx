@@ -15,8 +15,8 @@ export const Sidebar = () => {
   const location = useLocation();
 
   const navItems = [
-    { icon: LayoutDashboard, label: "Dashboard", path: "/a" },
-    { icon: Shield, label: "Programs", path: "/a" },
+    { icon: LayoutDashboard, label: "Dashboard", path: "/companydash" },
+    { icon: Shield, label: "Programs", path: "/companyprograms" },
     { icon: Bug, label: "Reports", path: "/a" },
     { icon: User, label: "Researchers", path: "/a" },
     { icon: Wallet, label: "Rewards", path: "/a" },

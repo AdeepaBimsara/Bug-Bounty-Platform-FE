@@ -8,6 +8,7 @@ import ProgramDetails from '../pages/programs/ProgramDetails'
 import SubmitReport from '../pages/programs/SubmitReport'
 import MyReports from '../pages/reports/MyReports'
 import Dashboard from '../pages/dashboard/company_dashboard/Dashboard'
+import ProgramsManagementPage from '../pages/companyPrograms/ProgramsManagementPage'
 
 export const Router = () => {
   return (
@@ -24,6 +25,8 @@ export const Router = () => {
             <Route path='/submit-report/:id' element={<SubmitReport/>}/>
             <Route path='/reports' element={<MyReports/>}/> 
             <Route path="/companydash" element ={<Dashboard/>}/>
+            <Route path='/companyprograms' element={<ProgramsManagementPage/>}/>
+
 
         </Routes>
     </BrowserRouter>

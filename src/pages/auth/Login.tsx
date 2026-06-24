@@ -28,9 +28,9 @@ export const Login = () => {
         // navigate("/researcherdash")
 
         // role check
-        if (userData.role == "Company") {
+        if (userData.role == "COMPANY") {
           navigate("/companydash");
-        } else if (userData.role === "Researcher") {
+        } else if (userData.role === "RESEARCHER") {
           navigate("/researcherdash");
         } else {
           alert("Invalid role");
