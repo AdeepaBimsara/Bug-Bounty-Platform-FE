@@ -1,8 +1,12 @@
 'use client';
 
 import { Search, Bell, User } from 'lucide-react';
+import { useState } from 'react';
+import ResearcherProfilePopup from '../../userProfile/ResearcherProfilePopup';
 
 export const TopNav = () => {
+
+  const [openProfile,setOpenProfile] = useState(false);
 
   return (
     <div className="fixed top-0 left-64 right-0 h-16 border-b border-cyan-400/20 bg-black/40 backdrop-blur-md px-8 flex items-center justify-between z-40">
@@ -30,11 +34,22 @@ export const TopNav = () => {
           <Bell className="w-5 h-5 text-gray-400 group-hover:text-cyan-400" />
           <span className="absolute top-1 right-1 w-2 h-2 bg-cyan-400 rounded-full"></span>
         </button>
-        <button className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-cyan-400/10 transition-colors">
+        <button onClick={()=>setOpenProfile(true)} className="flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-cyan-400/10 transition-colors">
           <div className="w-8 h-8 bg-linear-to-br from-cyan-400/30 to-blue-500/30 rounded-full flex items-center justify-center border border-cyan-400/30">
             <User className="w-4 h-4 text-cyan-400" />
           </div>
         </button>
+
+{
+openProfile && (
+
+<ResearcherProfilePopup 
+close={()=>setOpenProfile(false)}
+/>
+
+)
+}
+
       </div>
     </div>
   );

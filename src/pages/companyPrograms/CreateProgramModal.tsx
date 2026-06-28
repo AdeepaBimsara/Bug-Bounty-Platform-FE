@@ -1,15 +1,84 @@
 import { X, Shield, DollarSign } from "lucide-react";
+import { createProgram, updateProgram } from "../../services/program";
+import { useEffect, useState } from "react";
 
 interface CreateProgramModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSuccess: () => void;
+  program?: any;
+  loadPrograms: () => void;
 }
 
 const CreateProgramModal = ({
   isOpen,
+  onSuccess,
   onClose,
+  program,
 }: CreateProgramModalProps) => {
   if (!isOpen) return null;
+
+  const [title, setTitle] = useState("");
+  const [type, setType] = useState("");
+  const [description, setDescription] = useState("");
+  const [scope, setScope] = useState("");
+  const [visibility, setVisibility] = useState("PUBLIC");
+  const [rewardMin, setRewardMin] = useState(0);
+  const [rewardMax, setRewardMax] = useState(0);
+
+  const isEditMode = !!program;
+
+  const handleSubmit = async () => {
+    try {
+      if (isEditMode) {
+        await updateProgram(program._id, {
+          title,
+          description,
+          scope,
+          type,
+          rewardMin,
+          rewardMax,
+        });
+        alert("Program updated");
+        onSuccess();
+        onClose();
+      } else {
+        await createProgram({
+          title,
+          description,
+          scope,
+          visibility,
+          rewardMin,
+          rewardMax,
+        });
+
+        alert("Program Created");
+        onSuccess();
+        onClose();
+      }
+    } catch (err) {
+      alert("Create Failed");
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    if (program) {
+      setTitle(program.title);
+      setDescription(program.description);
+      setScope(program.scope);
+      setType(program.type);
+      setRewardMin(program.rewardMin);
+      setRewardMax(program.rewardMax);
+    } else {
+      setTitle("");
+      setDescription("");
+      setScope("");
+      setType("");
+      setRewardMin(0);
+      setRewardMax(0);
+    }
+  }, [program]);
 
   return (
     <div
@@ -50,9 +119,7 @@ const CreateProgramModal = ({
 
         {/* Header */}
         <div className="mb-8">
-          <h2 className="text-3xl font-bold">
-            Create New Program
-          </h2>
+          <h2 className="text-3xl font-bold">{isEditMode ? "Edit Program" : "Create Program"}</h2>
 
           <p className="text-slate-400 mt-2">
             Launch a new bug bounty program and invite researchers.
@@ -61,14 +128,13 @@ const CreateProgramModal = ({
 
         {/* Form */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
           {/* Program Name */}
           <div className="md:col-span-2">
-            <label className="block mb-2 text-sm">
-              Program Name
-            </label>
+            <label className="block mb-2 text-sm">Program Name</label>
 
             <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               type="text"
               placeholder="Netflix Security Program"
               className="
@@ -85,11 +151,11 @@ const CreateProgramModal = ({
 
           {/* Program Type */}
           <div>
-            <label className="block mb-2 text-sm">
-              Program Type
-            </label>
+            <label className="block mb-2 text-sm">Program Type</label>
 
             <select
+              value={type}
+              onChange={(e) => setType(e.target.value)}
               className="
                 w-full
                 rounded-xl
@@ -107,11 +173,11 @@ const CreateProgramModal = ({
 
           {/* Status */}
           <div>
-            <label className="block mb-2 text-sm">
-              Visibility
-            </label>
+            <label className="block mb-2 text-sm">Visibility</label>
 
             <select
+              value={visibility}
+              onChange={(e) => setVisibility(e.target.value)}
               className="
                 w-full
                 rounded-xl
@@ -127,11 +193,11 @@ const CreateProgramModal = ({
 
           {/* Min Reward */}
           <div>
-            <label className="block mb-2 text-sm">
-              Minimum Reward
-            </label>
+            <label className="block mb-2 text-sm">Minimum Reward</label>
 
             <input
+              value={rewardMin}
+              onChange={(e) => setRewardMin(Number(e.target.value))}
               type="number"
               placeholder="$100"
               className="
@@ -146,11 +212,11 @@ const CreateProgramModal = ({
 
           {/* Max Reward */}
           <div>
-            <label className="block mb-2 text-sm">
-              Maximum Reward
-            </label>
+            <label className="block mb-2 text-sm">Maximum Reward</label>
 
             <input
+              value={rewardMax}
+              onChange={(e) => setRewardMax(Number(e.target.value))}
               type="number"
               placeholder="$5000"
               className="
@@ -165,11 +231,11 @@ const CreateProgramModal = ({
 
           {/* Description */}
           <div className="md:col-span-2">
-            <label className="block mb-2 text-sm">
-              Program Description
-            </label>
+            <label className="block mb-2 text-sm">Program Description</label>
 
             <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               rows={5}
               placeholder="Describe your bug bounty program..."
               className="
@@ -185,11 +251,11 @@ const CreateProgramModal = ({
 
           {/* Scope */}
           <div className="md:col-span-2">
-            <label className="block mb-2 text-sm">
-              Scope
-            </label>
+            <label className="block mb-2 text-sm">Scope</label>
 
             <textarea
+              value={scope}
+              onChange={(e) => setScope(e.target.value)}
               rows={4}
               placeholder="*.example.com, api.example.com ..."
               className="
@@ -220,6 +286,7 @@ const CreateProgramModal = ({
           </button>
 
           <button
+            onClick={handleSubmit}
             className="
               px-6
               py-3
@@ -231,7 +298,8 @@ const CreateProgramModal = ({
               transition
             "
           >
-            Create Program
+            {/* Create Program */}
+            {isEditMode ? "Edit Program" : "Create Program"}
           </button>
         </div>
       </div>

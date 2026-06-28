@@ -20,10 +20,10 @@ export const Sidebar = () => {
     { icon: LayoutDashboard, label: 'Dashboard',path: "/researcherdash"},
     { icon: Search, label: 'Browse Programs',path: "/programs" },
     { icon: Bug, label: 'My Reports',path: "/reports" },
-    { icon: Trophy, label: 'Leaderboard',path: "/a" },
+    // { icon: Trophy, label: 'Leaderboard',path: "/a" },
     { icon: MessageSquare, label: 'Messages',path: "/a" },
-    { icon: User, label: 'Profile',path: "/a" },
-    { icon: Settings, label: 'Settings',path: "/a" },
+    { icon: User, label: 'Profile',path: "/researcherprofile" },
+    // { icon: Settings, label: 'Settings',path: "/a" },
   ];
 
   return (

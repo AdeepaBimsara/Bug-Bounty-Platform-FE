@@ -17,11 +17,11 @@ export const Sidebar = () => {
   const navItems = [
     { icon: LayoutDashboard, label: "Dashboard", path: "/companydash" },
     { icon: Shield, label: "Programs", path: "/companyprograms" },
-    { icon: Bug, label: "Reports", path: "/a" },
-    { icon: User, label: "Researchers", path: "/a" },
-    { icon: Wallet, label: "Rewards", path: "/a" },
+    { icon: Bug, label: "Reports", path: "/companyreports" },
+    // { icon: User, label: "Researchers", path: "/a" },
+    { icon: Wallet, label: "Rewards", path: "/companyrewards" },
     { icon: MessageCircle, label: "Messages", path: "/a" },
-    { icon: Settings, label: "Settings", path: "/a" },
+    { icon: User, label: "Profile", path: "/a" },
   ];
 
   return (

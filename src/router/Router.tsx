@@ -9,6 +9,10 @@ import SubmitReport from '../pages/programs/SubmitReport'
 import MyReports from '../pages/reports/MyReports'
 import Dashboard from '../pages/dashboard/company_dashboard/Dashboard'
 import ProgramsManagementPage from '../pages/companyPrograms/ProgramsManagementPage'
+import Reports from '../pages/companyReports/Reports'
+import RewardsCenter from '../pages/CompanyRewards/RewardsCenter'
+import ResearcherProfilePopup from '../pages/userProfile/ResearcherProfilePopup'
+import ResearcherProfile from '../pages/userProfile/ResearcherProfile'
 
 export const Router = () => {
   return (
@@ -26,6 +30,11 @@ export const Router = () => {
             <Route path='/reports' element={<MyReports/>}/> 
             <Route path="/companydash" element ={<Dashboard/>}/>
             <Route path='/companyprograms' element={<ProgramsManagementPage/>}/>
+            <Route path='/companyreports' element={<Reports/>}/>
+            <Route path='/companyrewards' element={<RewardsCenter/>}/>
+            <Route path='/researcherprofile' element={<ResearcherProfile/>}/>
+
+            
 
 
         </Routes>
