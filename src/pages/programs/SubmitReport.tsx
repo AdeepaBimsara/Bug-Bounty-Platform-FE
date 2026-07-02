@@ -1,9 +1,10 @@
 import { useParams, useNavigate } from "react-router-dom";
 import Sidebar from "../dashboard/researcher_dashboard/Sidebar";
-import mockPrograms from "../programs/data/Programs";
+// import mockPrograms from "../programs/data/Programs";
 import { ArrowLeft, Upload, Shield } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import api from "../../services/api";
+import { getProgramById } from "../../services/program";
 
 const SubmitReport = () => {
   const { id } = useParams();
@@ -11,12 +12,28 @@ const SubmitReport = () => {
   const navigate = useNavigate();
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string>("");
+  const [program, setProgram] = useState<any>(null);
 
-  const program = mockPrograms.find((item) => item.id === Number(id));
+  // const program = mockPrograms.find((item) => item.id === Number(id));
 
   const [title, setTitle] = useState("");
   const [severity, setSeverity] = useState("Low");
   const [description, setDescription] = useState("");
+
+  useEffect(() => {
+    if (id) {
+      loadProgram();
+    }
+  }, [id]);
+
+  const loadProgram = async () => {
+    try {
+      const data = await getProgramById(id!);
+      setProgram(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,9 +41,9 @@ const SubmitReport = () => {
     try {
       const formData = new FormData();
 
-      formData.append("programId", String(program?.id));
+      formData.append("programId", String(program._id));
 
-      formData.append("programName", program?.name || "");
+      formData.append("programName", program.title || "");
 
       formData.append("title", title);
       formData.append("severity", severity);
@@ -104,7 +121,8 @@ const SubmitReport = () => {
                 text-3xl
                 "
             >
-              {program?.logo}
+              {/* {program?.logo} */}
+              {program.companyId.fullName.charAt(0)}
             </div>
 
             <div>
@@ -118,7 +136,7 @@ const SubmitReport = () => {
                 Submit Report
               </h1>
 
-              <p className="text-slate-400">{program?.name}</p>
+              <p className="text-slate-400">{program.title}</p>
             </div>
           </div>
 

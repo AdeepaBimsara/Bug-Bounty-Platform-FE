@@ -1,18 +1,38 @@
-import { Target, Users, Clock, TrendingUp } from "lucide-react";
+import { Target, Users, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+
+// interface ProgramCardProps {
+//   program: {
+//     _id: number;
+//     title: string;
+//     company: string;
+//     logo: string;
+//     status: string;
+//     bountyMax: string;
+//     vulnerabilitiesFound: number;
+//     researchersCount: number;
+//     lastUpdated: string;
+//     tags: string[];
+//   };
+// }
 
 interface ProgramCardProps {
   program: {
-    id: number;
-    name: string;
-    company: string;
-    logo: string;
+    _id: string;
+    title: string;
+    description: string;
+    scope: string;
+    type: string;
+    visibility: string;
+    rewardMin: number;
+    rewardMax: number;
     status: string;
-    bountyMax: string;
-    vulnerabilitiesFound: number;
-    researchersCount: number;
-    lastUpdated: string;
-    tags: string[];
+    updatedAt: string;
+
+    companyId: {
+      _id: string;
+      fullName: string;
+    };
   };
 }
 
@@ -66,7 +86,7 @@ export default function ProgramCard({ program }: ProgramCardProps) {
             transition-transform
           "
             >
-              {program.logo}
+              {program.companyId?.fullName?.charAt(0) ?? "C"}
             </div>
 
             <div className="min-w-0">
@@ -80,7 +100,7 @@ export default function ProgramCard({ program }: ProgramCardProps) {
               transition-colors
             "
               >
-                {program.name}
+                {program.title}
               </h3>
 
               <p
@@ -89,7 +109,7 @@ export default function ProgramCard({ program }: ProgramCardProps) {
               text-slate-400
             "
               >
-                {program.company}
+                {program.companyId.fullName}
               </p>
             </div>
           </div>
@@ -129,17 +149,18 @@ export default function ProgramCard({ program }: ProgramCardProps) {
           text-cyan-400
         "
           >
-            {program.bountyMax}
+            ${program.rewardMin.toLocaleString()} - $
+            {program.rewardMax.toLocaleString()}
           </h2>
         </div>
 
         {/* Tags */}
 
         <div className="flex flex-wrap gap-2">
-          {program.tags.map((tag) => (
-            <span
-              key={tag}
-              className="
+          {/* {program.tags.map((tag) => ( */}
+          <span
+            // key={tag}
+            className="
             px-3 py-1
             rounded-full
             text-xs
@@ -147,10 +168,24 @@ export default function ProgramCard({ program }: ProgramCardProps) {
             text-cyan-300
             border border-cyan-400/20
           "
-            >
-              #{tag}
-            </span>
-          ))}
+          >
+            {/* #{tag} */}
+            {program.type}
+          </span>
+          {/* ))} */}
+
+          <span
+            className="
+            px-3 py-1
+            rounded-full
+            text-xs
+            bg-purple-500/10
+            text-purple-300
+            border border-purple-500/20
+            "
+          >
+            {program.visibility}
+          </span>
         </div>
 
         {/* Stats */}
@@ -173,10 +208,11 @@ export default function ProgramCard({ program }: ProgramCardProps) {
             <Target className="mx-auto text-cyan-400 h-5" />
 
             <p className="mt-2 text-white font-bold">
-              {(program.vulnerabilitiesFound / 1000).toFixed(1)}K
+              {/* {(program.vulnerabilitiesFound / 1000).toFixed(1)}K */}
+              {program.type}
             </p>
 
-            <p className="text-xs text-slate-400">Vulns</p>
+            <p className="text-xs text-slate-400">Type</p>
           </div>
 
           <div
@@ -191,10 +227,11 @@ export default function ProgramCard({ program }: ProgramCardProps) {
             <Users className="mx-auto text-cyan-400 h-5" />
 
             <p className="mt-2 text-white font-bold">
-              {program.researchersCount}
+              {/* {program.researchersCount} */}
+              {program.visibility}
             </p>
 
-            <p className="text-xs text-slate-400">Researchers</p>
+            <p className="text-xs text-slate-400">Visibility</p>
           </div>
 
           <div
@@ -216,7 +253,8 @@ export default function ProgramCard({ program }: ProgramCardProps) {
             text-sm
           "
             >
-              {program.lastUpdated}
+              {/* {program.lastUpdated} */}
+              {new Date(program.updatedAt).toLocaleDateString()}
             </p>
 
             <p className="text-xs text-slate-400">Updated</p>
@@ -228,7 +266,7 @@ export default function ProgramCard({ program }: ProgramCardProps) {
         <div className="flex gap-3 pt-3">
           <button
             onClick={() => {
-              navigate(`/programs/${program.id}`);
+              navigate(`/programs/${program._id}`);
             }}
             className="
           flex-1
@@ -249,8 +287,8 @@ export default function ProgramCard({ program }: ProgramCardProps) {
           </button>
 
           <button
-          onClick={() => {
-              navigate(`/submit-report/${program.id}`);
+            onClick={() => {
+              navigate(`/submit-report/${program._id}`);
             }}
             className="
           flex-1

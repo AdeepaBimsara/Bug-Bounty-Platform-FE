@@ -1,13 +1,32 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Shield, Users, Bug, DollarSign } from "lucide-react";
 import Sidebar from "../dashboard/researcher_dashboard/Sidebar";
-import mockPrograms from "../programs/data/Programs";
+import { useEffect, useState } from "react";
+import { getProgramById } from "../../services/program";
+// import mockPrograms from "../programs/data/Programs";
 
 const ProgramDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const program = mockPrograms.find((item: any) => item.id === Number(id));
+  // const program = mockPrograms.find((item: any) => item.id === Number(id));
+
+  const [program, setProgram] = useState<any>(null);
+
+  useEffect(() => {
+    if (id) {
+      loadProgram();
+    }
+  }, [id]);
+
+  const loadProgram = async () => {
+    try {
+      const data = await getProgramById(id!);
+      setProgram(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   if (!program) {
     return <div className="text-white">Program Not Found</div>;
@@ -73,7 +92,8 @@ const ProgramDetails = () => {
             text-5xl
             "
             >
-              {program.logo}
+              {/* {program.logo} */}
+              {program.companyId.fullName.charAt(0)}
             </div>
 
             <div>
@@ -84,7 +104,8 @@ const ProgramDetails = () => {
               text-cyan-400
               "
               >
-                {program.name}
+                {/* {program.name} */}
+                {program.title}
               </h1>
 
               <p
@@ -94,7 +115,8 @@ const ProgramDetails = () => {
               mt-2
               "
               >
-                {program.company}
+                {/* {program.company} */}
+                {program.companyId.fullName}
               </p>
             </div>
           </div>
@@ -113,19 +135,15 @@ const ProgramDetails = () => {
             <StatCard
               icon={<DollarSign />}
               title="Maximum Reward"
-              value={program.bountyMax}
+              value={`$${program.rewardMin} - $${program.rewardMax}`}
             />
 
-            <StatCard
-              icon={<Bug />}
-              title="Reports"
-              value={program.vulnerabilitiesFound.toString()}
-            />
+            <StatCard icon={<Bug />} title="Type" value={program.type} />
 
             <StatCard
               icon={<Users />}
-              title="Researchers"
-              value={program.researchersCount.toString()}
+              title="Visibility"
+              value={program.visibility}
             />
 
             <StatCard icon={<Shield />} title="Status" value={program.status} />
@@ -140,7 +158,7 @@ const ProgramDetails = () => {
             font-bold
             "
             >
-              About Program
+              {program.description}
             </h2>
 
             <p
@@ -151,15 +169,15 @@ const ProgramDetails = () => {
             "
             >
               Find security vulnerabilities and help improve
-              {program.company}'s products. Researchers can submit valid
-              security issues and earn rewards.
+              {program.companyId.fullName}'s products. Researchers can submit
+              valid security issues and earn rewards.
             </p>
           </div>
 
           {/* Tags */}
-
+          {/* 
           <div className="mt-8 flex gap-3 flex-wrap">
-            {program.tags.map((tag) => (
+            {program.tags.map((tag: string) => (
               <span
                 key={tag}
                 className="
@@ -175,12 +193,25 @@ const ProgramDetails = () => {
                 {tag}
               </span>
             ))}
+          </div> */}
+          <div className="mt-8 flex gap-3 flex-wrap">
+            <span className="px-5 py-2 rounded-full bg-cyan-400/20 text-cyan-300">
+              {program.type}
+            </span>
+
+            <span className="px-5 py-2 rounded-full bg-purple-500/20 text-purple-300">
+              {program.visibility}
+            </span>
+
+            <span className="px-5 py-2 rounded-full bg-green-500/20 text-green-300">
+              {program.status}
+            </span>
           </div>
 
           {/* Submit Button */}
 
           <button
-            onClick={() => navigate(`/submit-report/${program.id}`)}
+            onClick={() => navigate(`/submit-report/${program._id}`)}
             className="
           mt-12
           px-10

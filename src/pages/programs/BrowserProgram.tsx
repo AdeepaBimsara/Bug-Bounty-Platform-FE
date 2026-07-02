@@ -1,27 +1,29 @@
-"use client";
-
-import { useState } from "react";
-import {
-  Search,
-  ChevronDown,
-  Shield,
-  Target,
-  Users,
-  Clock,
-  Zap,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import { Search, ChevronDown, Shield } from "lucide-react";
 import BrowseProgramsHeader from "../programs/Header";
 import BrowseProgramsFilters from "../programs/Filters";
 import ProgramCard from "../programs/ProgramCards";
 import ProgramPagination from "../programs/Pagination";
 import Sidebar from "../dashboard/researcher_dashboard/Sidebar";
-import mockPrograms from "./data/Programs";
+// import mockPrograms from "./data/Programs";
+import { browsePrograms, getMyPrograms } from "../../services/program";
 
 export const BrowserProgram = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("All");
   const [sortBy, setSortBy] = useState("Most Popular");
   const [currentPage, setCurrentPage] = useState(1);
+
+  const [programs, setPrograms] = useState([]);
+
+  useEffect(() => {
+    loadPrograms();
+  }, []);
+
+  const loadPrograms = async () => {
+    const data = await browsePrograms();
+    setPrograms(data);
+  };
 
   const filters = ["All", "Web", "API", "Mobile", "Cloud"];
   const sortOptions = [
@@ -32,26 +34,23 @@ export const BrowserProgram = () => {
   ];
 
   // Filter programs based on search and category
-  let filteredPrograms = mockPrograms.filter((program) => {
+  let filteredPrograms = programs.filter((program: any) => {
     const matchesSearch =
-      program.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      program.company.toLowerCase().includes(searchQuery.toLowerCase());
+      program.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      program.fullName.toLowerCase().includes(searchQuery.toLowerCase());
 
     const matchesFilter =
-      selectedFilter === "All" || program.tags.includes(selectedFilter);
+      selectedFilter === "All" ||
+      program.type === selectedFilter.toLocaleUpperCase();
 
     return matchesSearch && matchesFilter;
   });
 
   // Sort programs
   if (sortBy === "Highest Reward") {
-    filteredPrograms.sort(
-      (a, b) =>
-        parseInt(b.bountyMax.replace(/[$,]/g, "")) -
-        parseInt(a.bountyMax.replace(/[$,]/g, "")),
-    );
+    filteredPrograms.sort((a: any, b: any) => a.rewardMax - b.rewardMax);
   } else if (sortBy === "Most Active") {
-    filteredPrograms.sort((a, b) => b.researchersCount - a.researchersCount);
+    // filteredPrograms.sort((a, b) => b.researchersCount - a.researchersCount);
   }
 
   // Pagination
@@ -268,7 +267,7 @@ export const BrowserProgram = () => {
           </div>
 
           {/* Programs Grid */}
-          {displayedPrograms.length > 0 ? (
+          {/* {displayedPrograms.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               {displayedPrograms.map((program) => (
                 <ProgramCard key={program.id} program={program} />
@@ -281,7 +280,23 @@ export const BrowserProgram = () => {
                 No programs found matching your search criteria.
               </p>
             </div>
-          )}
+          )} */}
+          <div>
+            {displayedPrograms.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                {displayedPrograms.map((program: any) => (
+                  <ProgramCard key={program._id} program={program} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-16">
+                <Shield className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
+                <p className="text-muted-foreground text-lg">
+                  No programs found matching your search criteria.
+                </p>
+              </div>
+            )}
+          </div>
 
           {/* Pagination */}
           {totalPages > 1 && (

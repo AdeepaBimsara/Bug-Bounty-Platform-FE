@@ -15,7 +15,7 @@ import { deleteProgram, getMyPrograms } from "../../services/program";
 
 export const ProgramsManagementPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedProgram, setSelectedProgram] = useState<any>(null)
+  const [selectedProgram, setSelectedProgram] = useState<any>(null);
   const [programs, setPrograms] = useState([]);
 
   useEffect(() => {
@@ -25,7 +25,8 @@ export const ProgramsManagementPage = () => {
   const loadPrograms = async () => {
     try {
       const data = await getMyPrograms();
-      setPrograms(data.data);
+      console.log("Programs Response:", data);
+      setPrograms(data);
     } catch (err) {
       console.log(err);
     }
@@ -48,16 +49,14 @@ export const ProgramsManagementPage = () => {
   };
 
   const openCreateModal = () => {
-  setSelectedProgram(null);
-  setIsModalOpen(true);
-};
+    setSelectedProgram(null);
+    setIsModalOpen(true);
+  };
 
-const openEditModal = (program: any) => {
-  setSelectedProgram(program);
-  setIsModalOpen(true);
-};
-
-
+  const openEditModal = (program: any) => {
+    setSelectedProgram(program);
+    setIsModalOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-slate-950 to-indigo-950 text-white">
@@ -88,8 +87,8 @@ const openEditModal = (program: any) => {
             </button>
 
             <button
-            //   onClick={() => setIsModalOpen(true)}
-            onClick={openCreateModal}
+              //   onClick={() => setIsModalOpen(true)}
+              onClick={openCreateModal}
               className="
           flex
           items-center
@@ -255,9 +254,8 @@ const openEditModal = (program: any) => {
 
               <div className="flex gap-2 mt-6">
                 <button
-                onClick={()=>handleDelete(program._id)}
-
-                className="
+                  onClick={() => handleDelete(program._id)}
+                  className="
                 flex-1
                 py-2
                 rounded-lg
@@ -275,8 +273,9 @@ const openEditModal = (program: any) => {
                 </button>
 
                 <button
-                onClick={() => openEditModal(program)} 
-                className="flex-1 py-2 rounded-lg border border-white/10">
+                  onClick={() => openEditModal(program)}
+                  className="flex-1 py-2 rounded-lg border border-white/10"
+                >
                   Edit
                 </button>
 

@@ -8,7 +8,7 @@ export const createProgram = async (programData: any) => {
 
 export const getMyPrograms = async () => {
   const res = await api.get("/programs/my-programs");
-  return res.data;
+  return res.data.data;
 };
 
 export const deleteProgram = async (
@@ -31,4 +31,14 @@ export const updateProgram = async (
   );
 
   return res.data;
+};
+
+export const getProgramById = async (id: string) => {
+    const res = await api.get(`/programs/${id}`);
+    return res.data.data;
+};
+
+export const browsePrograms = async () => {
+  const res = await api.get("/programs");
+  return res.data.data;
 };

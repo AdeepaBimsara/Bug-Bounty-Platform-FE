@@ -28,6 +28,24 @@ const CreateProgramModal = ({
 
   const isEditMode = !!program;
 
+  useEffect(() => {
+    if (program) {
+      setTitle(program.title);
+      setDescription(program.description);
+      setScope(program.scope);
+      setType(program.type);
+      setRewardMin(program.rewardMin);
+      setRewardMax(program.rewardMax);
+    } else {
+      setTitle("");
+      setDescription("");
+      setScope("");
+      setType("");
+      setRewardMin(0);
+      setRewardMax(0);
+    }
+  }, [program]);
+
   const handleSubmit = async () => {
     try {
       if (isEditMode) {
@@ -61,24 +79,6 @@ const CreateProgramModal = ({
       console.error(err);
     }
   };
-
-  useEffect(() => {
-    if (program) {
-      setTitle(program.title);
-      setDescription(program.description);
-      setScope(program.scope);
-      setType(program.type);
-      setRewardMin(program.rewardMin);
-      setRewardMax(program.rewardMax);
-    } else {
-      setTitle("");
-      setDescription("");
-      setScope("");
-      setType("");
-      setRewardMin(0);
-      setRewardMax(0);
-    }
-  }, [program]);
 
   return (
     <div
@@ -119,7 +119,9 @@ const CreateProgramModal = ({
 
         {/* Header */}
         <div className="mb-8">
-          <h2 className="text-3xl font-bold">{isEditMode ? "Edit Program" : "Create Program"}</h2>
+          <h2 className="text-3xl font-bold">
+            {isEditMode ? "Edit Program" : "Create Program"}
+          </h2>
 
           <p className="text-slate-400 mt-2">
             Launch a new bug bounty program and invite researchers.

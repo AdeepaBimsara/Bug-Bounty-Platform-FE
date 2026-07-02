@@ -21,7 +21,7 @@ export const Sidebar = () => {
     // { icon: User, label: "Researchers", path: "/a" },
     { icon: Wallet, label: "Rewards", path: "/companyrewards" },
     { icon: MessageCircle, label: "Messages", path: "/a" },
-    { icon: User, label: "Profile", path: "/a" },
+    { icon: User, label: "Profile", path: "/companyprofile" },
   ];
 
   return (
